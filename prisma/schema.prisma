@@ -1,0 +1,97 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+// Para criar migrate > npx prisma migrate dev
+// Se acaso não não criar a pasta generated > npx prisma generate
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  STAFF
+  ADMIN
+}
+
+model User {
+  id       String @id @default(uuid())
+  name     String
+  email    String @unique
+  password String
+
+  role Role @default(STAFF)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Category {
+  id   String @id @default(uuid())
+  name String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  products Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id          String  @id @default(uuid())
+  name        String
+  price       Int
+  description String
+  banner      String
+  disabled    Boolean @default(false)
+
+  category_id String
+  category    Category @relation(fields: [category_id], references: [id], onDelete: Cascade)
+
+  items Item[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("products")
+}
+
+model Order {
+  id     String  @id @default(uuid())
+  name   String
+  table  Int
+  status Boolean @default(false) // false = Pendente , true = Pronto
+  draft  Boolean @default(true) // false ainda e rascunho, true foi enviado opedido para cozinha
+
+  items Item[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("orders")
+}
+
+model Item {
+  id     String @id @default(uuid())
+  amount Int
+
+  createdAt DateTime @default(now())
+  updateAT  DateTime @updatedAt
+
+  order_id String
+  order    Order  @relation(fields: [order_id], references: [id], onDelete: Cascade) // relaçao com model de order
+
+  product_id String
+  product    Product @relation(fields: [product_id], references: [id], onDelete: Cascade) // relação com mdel de product
+
+
+  @@map("items")
+}
