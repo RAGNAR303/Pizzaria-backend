@@ -17,7 +17,9 @@ import { ListProductController } from "./controllers/product/ListProductControll
 import { DeleteProductController } from "./controllers/product/DeleteProductController";
 import { ListProductByCategoryController } from "./controllers/product/ListProductCategoryController";
 import { CreateOrderController } from "./controllers/orders/CreateOrderController";
-import { createOrderSchema } from "./schemas/orderSchema";
+import { addOrdersSchema, createOrderSchema, listOrdersSchema } from "./schemas/orderSchema";
+import { ListOrdersController } from "./controllers/orders/ListOrdersController";
+import { AddItemOrdersController } from "./controllers/orders/AddItemOrdersController";
 
 
 
@@ -50,10 +52,15 @@ router.post('/product', isAuthenticated, isAdmin, upload.single('file'), validat
 router.get("/products", isAuthenticated, new ListProductController().handle)
 // deletar/desabilitar produto
 router.delete("/product", isAuthenticated, isAdmin, validateSchema(DeleteProductSchema), new DeleteProductController().handle)
-// listar produto porcategoria
+// listar produto por categoria
 router.get("/category/product", isAuthenticated, validateSchema(ListProductByCategoriaSchema), new ListProductByCategoryController().handle)
+
+
 ////// Rotas orders //////
+// criar pedido
 router.post("/order", isAuthenticated, validateSchema(createOrderSchema), new CreateOrderController().handle)
-
-
+// listar pedidos
+router.get('/orders', isAuthenticated, validateSchema(listOrdersSchema), new ListOrdersController().handle)
+// adiconar item 
+router.post("/order/add", isAuthenticated, validateSchema(addOrdersSchema), new AddItemOrdersController().handle)
 export { router }
