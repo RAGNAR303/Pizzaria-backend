@@ -12,9 +12,12 @@ import { isAdmin } from "./middlewares/isAdmin";
 import { createCategorySchema } from "./schemas/categorySchema";
 import { ListCategoriesController } from "./controllers/category/ListCategoriesController";
 import { CreateProductController } from "./controllers/product/CreateProductController";
-import { createProductSchema } from "./schemas/productSchema";
+import { createProductSchema, DeleteProductSchema, ListProductByCategoriaSchema } from "./schemas/productSchema";
 import { ListProductController } from "./controllers/product/ListProductController";
 import { DeleteProductController } from "./controllers/product/DeleteProductController";
+import { ListProductByCategoryController } from "./controllers/product/ListProductCategoryController";
+import { CreateOrderController } from "./controllers/orders/CreateOrderController";
+import { createOrderSchema } from "./schemas/orderSchema";
 
 
 
@@ -43,10 +46,14 @@ router.get("/categories", isAuthenticated, new ListCategoriesController().handle
 ////// Rotas product //////
 // Criar produtos
 router.post('/product', isAuthenticated, isAdmin, upload.single('file'), validateSchema(createProductSchema), new CreateProductController().handle)
-
+// listar produtos 
 router.get("/products", isAuthenticated, new ListProductController().handle)
-
-router.delete("/product", isAuthenticated, isAdmin, new DeleteProductController().handle)
+// deletar/desabilitar produto
+router.delete("/product", isAuthenticated, isAdmin, validateSchema(DeleteProductSchema), new DeleteProductController().handle)
+// listar produto porcategoria
+router.get("/category/product", isAuthenticated, validateSchema(ListProductByCategoriaSchema), new ListProductByCategoryController().handle)
+////// Rotas orders //////
+router.post("/order", isAuthenticated, validateSchema(createOrderSchema), new CreateOrderController().handle)
 
 
 export { router }

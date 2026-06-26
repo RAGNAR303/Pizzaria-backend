@@ -1,3 +1,4 @@
+
 import { z } from 'zod'
 
 
@@ -18,3 +19,16 @@ export const listProductSchema = z.object({
         })
 
 })
+
+export const DeleteProductSchema = z.object({
+    query: z.object({
+        product_id: z.string("Obrigatório mandar o ID do produto para ser desabilitado")
+    })
+})
+
+export const ListProductByCategoriaSchema = z.object({
+    query: z.object({
+        category_id: z.string("Obrigatório mandar o ID do categoria para buscar")
+    })
+})
+
