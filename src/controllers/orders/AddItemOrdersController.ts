@@ -15,7 +15,7 @@ class AddItemOrdersController {
             order_id: order_id
         })
 
-        res.status(200).json(addItem)
+        res.status(201).json(addItem)
 
 
     }

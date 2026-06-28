@@ -1,65 +1,62 @@
-import prismaClient from "../../prisma";
 
+import prismaClient from "../../prisma"
 
-
-interface ListOrderProps {
-    draft?: string
+interface ListDetailsProps {
+    order_id: string
 }
 
-
-class ListOrdersService {
-    async execute({ draft }: ListOrderProps) {
+class ListOrdersDetailsService {
+    async execute({ order_id }: ListDetailsProps) {
 
 
         try {
-            const orders = await prismaClient.order.findMany({
+            const exitsOrder = await prismaClient.order.findFirst({
                 where: {
-                    draft: draft === "true" ? true : false
+                    id: order_id
                 },
                 select: {
-                    id: true,
                     table: true,
                     name: true,
-                    status: true,
                     draft: true,
+                    status: true,
                     createdAt: true,
                     items: {
+
                         select: {
                             id: true,
                             amount: true,
+
                             product: {
                                 select: {
                                     id: true,
                                     name: true,
-                                    description: true,
                                     price: true,
                                     banner: true,
                                     category: {
                                         select: {
+                                            id: true,
                                             name: true
                                         }
                                     }
+
                                 }
                             }
                         }
                     }
-
                 }
             })
 
-            if (!orders) {
-                throw new Error("Nenhum pedido foi criado")
+            if (!exitsOrder) {
+                throw new Error("Pedido não existe")
             }
 
-            return orders
+
+            return exitsOrder
         } catch (error) {
-            throw new Error("Erro em exibir pedidos")
+            console.log(error)
+            throw new Error("Error em exibir detalhes do pedido")
         }
-
-
-
 
     }
 }
-
-export { ListOrdersService }
+export { ListOrdersDetailsService }

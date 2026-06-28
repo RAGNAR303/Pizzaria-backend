@@ -4,7 +4,7 @@ import { ListOrdersService } from "../../services/orders/ListOrdersService"
 class ListOrdersController {
     async handle(req: Request, res: Response) {
 
-        const draft = req.query.draft as string
+        const draft = req.query.draft as string 
 
 
         const listOrders = new ListOrdersService()

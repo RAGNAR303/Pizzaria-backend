@@ -17,9 +17,11 @@ import { ListProductController } from "./controllers/product/ListProductControll
 import { DeleteProductController } from "./controllers/product/DeleteProductController";
 import { ListProductByCategoryController } from "./controllers/product/ListProductCategoryController";
 import { CreateOrderController } from "./controllers/orders/CreateOrderController";
-import { addOrdersSchema, createOrderSchema, listOrdersSchema } from "./schemas/orderSchema";
+import { addOrdersSchema, createOrderSchema, detailsOrdersSchema, removeOrdersSchema } from "./schemas/orderSchema";
 import { ListOrdersController } from "./controllers/orders/ListOrdersController";
 import { AddItemOrdersController } from "./controllers/orders/AddItemOrdersController";
+import { RemoveItemOrdersController } from "./controllers/orders/RemoveItemOrdersController";
+import { ListOrdersDetailsController } from "./controllers/orders/ListOrdersDetailsController";
 
 
 
@@ -60,7 +62,12 @@ router.get("/category/product", isAuthenticated, validateSchema(ListProductByCat
 // criar pedido
 router.post("/order", isAuthenticated, validateSchema(createOrderSchema), new CreateOrderController().handle)
 // listar pedidos
-router.get('/orders', isAuthenticated, validateSchema(listOrdersSchema), new ListOrdersController().handle)
+router.get('/orders', isAuthenticated, new ListOrdersController().handle)
+// listar detalhes de um pedido
+router.get('/order/details', isAuthenticated, validateSchema(detailsOrdersSchema), new ListOrdersDetailsController().handle)
+
 // adiconar item 
 router.post("/order/add", isAuthenticated, validateSchema(addOrdersSchema), new AddItemOrdersController().handle)
+// remover item 
+router.delete("/order/remove", isAuthenticated, validateSchema(removeOrdersSchema), new RemoveItemOrdersController().handle)
 export { router }

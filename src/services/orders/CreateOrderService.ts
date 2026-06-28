@@ -20,9 +20,9 @@ class CreateOrderService {
                     id: true,
                     table: true,
                     name: true,
-                    createdAt: true,
+                    status: true,
                     draft: true,
-
+                    createdAt: true,
                 }
             })
 
