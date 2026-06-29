@@ -17,11 +17,15 @@ import { ListProductController } from "./controllers/product/ListProductControll
 import { DeleteProductController } from "./controllers/product/DeleteProductController";
 import { ListProductByCategoryController } from "./controllers/product/ListProductCategoryController";
 import { CreateOrderController } from "./controllers/orders/CreateOrderController";
-import { addOrdersSchema, createOrderSchema, detailsOrdersSchema, removeOrdersSchema } from "./schemas/orderSchema";
+import { addOrdersSchema, createOrderSchema, detailsOrdersSchema, finishOrdersSchema, removeOrdersSchema, sendDraftOrdersSchema } from "./schemas/orderSchema";
 import { ListOrdersController } from "./controllers/orders/ListOrdersController";
 import { AddItemOrdersController } from "./controllers/orders/AddItemOrdersController";
 import { RemoveItemOrdersController } from "./controllers/orders/RemoveItemOrdersController";
 import { ListOrdersDetailsController } from "./controllers/orders/ListOrdersDetailsController";
+import { SendOrderController } from "./controllers/orders/SendOrderController";
+import { FinishOrderController } from "./controllers/orders/FinishOrderController";
+import { DeleteOrderController } from "./controllers/orders/DeleteOrderController";
+
 
 
 
@@ -70,4 +74,11 @@ router.get('/order/details', isAuthenticated, validateSchema(detailsOrdersSchema
 router.post("/order/add", isAuthenticated, validateSchema(addOrdersSchema), new AddItemOrdersController().handle)
 // remover item 
 router.delete("/order/remove", isAuthenticated, validateSchema(removeOrdersSchema), new RemoveItemOrdersController().handle)
+// enviar para produção
+router.put("/order/send", isAuthenticated, validateSchema(sendDraftOrdersSchema), new SendOrderController().handle)
+// Mudar estatus para pronto
+router.put("/order/finish", isAuthenticated, validateSchema(finishOrdersSchema), new FinishOrderController().handle)
+// deletar pedido
+router.delete("/order/delete", isAuthenticated, validateSchema(detailsOrdersSchema), new DeleteOrderController().handle)
+
 export { router }

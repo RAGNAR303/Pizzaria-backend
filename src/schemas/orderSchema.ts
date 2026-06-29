@@ -32,3 +32,18 @@ export const detailsOrdersSchema = z.object({
         order_id: z.string("O campo id do pedido obrigatório").min(1, "O campo id do pedido obrigatório")
     })
 })
+
+
+export const sendDraftOrdersSchema = z.object({
+    body: z.object({
+        name: z.string("O campo quantidade obrigatório").optional(),
+        order_id: z.string("O campo id do pedido obrigatório").min(1, "O campo id do pedido obrigatório")
+    })
+})
+
+
+export const finishOrdersSchema = z.object({
+    body: z.object({
+        order_id: z.string("O campo id do pedido obrigatório").min(1, "O campo id do pedido obrigatório")
+    })
+})
